@@ -1,0 +1,67 @@
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Lista de Tarefas</h2>
+
+  <table class="table table-bordered table-hover shadow-sm">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Custo (R$)</th>
+        <th>Data Limite</th>
+        <th>Ordem de Apresentação</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let t of tarefas; let i = index" [ngClass]="{'table-warning': t.custo >= 1000}">
+        <td>{{t.id}}</td>
+        <td>{{t.nome}}</td>
+        <td>{{t.custo | currency:'BRL'}}</td>
+        <td>{{t.dataLimite | date:'dd/MM/yyyy':'UTC'}}</td>
+        <td>{{i + 1}}</td> <!-- Ordem de Apresentação -->
+        <td>
+          <button class="btn btn-sm btn-light border me-1" (click)="mover(t.id, 'cima')" title="Subir">⬆</button>
+          <button class="btn btn-sm btn-light border me-2" (click)="mover(t.id, 'baixo')" title="Descer">⬇</button>
+          <button class="btn btn-sm btn-info me-2 text-white" (click)="abrirModal(t)">Editar</button>
+          <button class="btn btn-sm btn-danger" (click)="excluir(t.id)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr class="table-secondary">
+        <td colspan="6" class="text-end fw-bold">
+          Total: {{ custoTotal | currency:'BRL' }}
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-primary" (click)="abrirModal(null)">+ Incluir Tarefa</button>
+  </div>
+</div>
+
+<dialog #taskDialog
+  style="padding: 2rem; border: none; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 400px;">
+  <h3 class="mb-3">{{ editando ? 'Editar' : 'Nova' }} Tarefa</h3>
+
+  <div class="mb-3">
+    <label class="form-label">Nome da Tarefa</label>
+    <input [(ngModel)]="tarefaAtual.nome" type="text" class="form-control" placeholder="Ex: Comprar café">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Custo (R$)</label>
+    <input [(ngModel)]="tarefaAtual.custo" type="number" min="0" class="form-control">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Data Limite</label>
+    <input [(ngModel)]="tarefaAtual.dataLimite" type="date" class="form-control">
+  </div>
+
+  <div class="d-flex justify-content-end gap-2 mt-4">
+    <button (click)="fecharModal()" class="btn btn-secondary">Cancelar</button>
+    <button (click)="salvar()" class="btn btn-success">Salvar</button>
+  </div>
+</dialog>
