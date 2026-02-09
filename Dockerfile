@@ -1,9 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-COPY *.sln .
 COPY TarefasAPI/*.csproj ./TarefasAPI/
-RUN dotnet restore
+RUN dotnet restore TarefasAPI/TarefasAPI.csproj
 
 COPY TarefasAPI/. ./TarefasAPI/
 WORKDIR /app/TarefasAPI
