@@ -70,11 +70,13 @@ export class AppComponent implements OnInit {
 
     if (this.tarefaAtual.custo < 0) {
       alert('O Custo não pode ser negativo.');
+      this.tarefaAtual.custo = 0;
       return;
     }
 
     if (this.tarefaAtual.custo > 999999999999) {
       alert('O valor do custo excede o limite permitido. Valor Máximo: R$ 999.999.999.999');
+      this.tarefaAtual.custo = 0;
       return;
     }
 
