@@ -73,10 +73,25 @@ export class AppComponent implements OnInit {
       return;
     }
 
+    if (this.tarefaAtual.custo > 999999999999) {
+      alert('O valor do custo excede o limite permitido. Valor Máximo: R$ 999.999.999.999');
+      return;
+    }
+
     if (!this.tarefaAtual.dataLimite) {
       alert('A Data Limite é obrigatória.');
       return;
     }
+
+    const tratarErro = (e: any, msgPadrao: string) => {
+      if (e.error && typeof e.error === 'string') {
+        alert(e.error);
+      } else if (e.error && e.error.title) {
+        alert(`Erro de validação: ${e.error.title}`);
+      } else {
+        alert(msgPadrao);
+      }
+    };
 
     if (this.editando) {
       this.service.updateTarefa(this.tarefaAtual).subscribe({
@@ -84,7 +99,7 @@ export class AppComponent implements OnInit {
           this.carregarTarefas();
           this.fecharModal();
         },
-        error: (e) => alert(e.error || 'Erro ao editar. Verifique se o nome já existe.')
+        error: (e) => tratarErro(e, 'Erro ao editar. Verifique os dados e tente novamente.')
       });
     } else {
       this.service.createTarefa(this.tarefaAtual).subscribe({
@@ -92,7 +107,7 @@ export class AppComponent implements OnInit {
           this.carregarTarefas();
           this.fecharModal();
         },
-        error: (e) => alert(e.error || 'Erro ao criar. Verifique se o nome já existe.')
+        error: (e) => tratarErro(e, 'Erro ao criar. Verifique se o nome já existe.')
       });
     }
   }

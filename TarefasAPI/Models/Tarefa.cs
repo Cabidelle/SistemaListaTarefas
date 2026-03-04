@@ -11,8 +11,8 @@ namespace TarefasAPI.Models
         [Required(ErrorMessage = "O nome é obrigatório")]
         public string Nome { get; set; } = string.Empty;
 
-        [Required]
-        [Range(0, double.MaxValue, ErrorMessage = "O custo deve ser maior ou igual a zero")]
+        [Required(ErrorMessage = "O custo é obrigatório")]
+        [Range(0, 999999999999, ErrorMessage = "O custo deve ser entre R$ 0 e R$ 999.999.999.999")]
         public decimal Custo { get; set; }
 
         [Required]
